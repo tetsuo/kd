@@ -10,7 +10,7 @@ module.exports = class KDListViewBox extends KDCustomHTMLView
     super options
 
     @observeMutations()
-    @on 'MutationHappened', @bound 'updateProps'
+    @on 'MutationHappened', @bound @updateProps
 
 
   getItems: -> @subViews.filter (item)-> item instanceof KDListItemView

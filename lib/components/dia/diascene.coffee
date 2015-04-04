@@ -1,8 +1,8 @@
-$ = require 'jquery'
-KD = require '../../core/kd'
+$                = require 'jquery'
+KD               = require '../../core/kd'
 KDView           = require '../../core/view'
 KDCustomHTMLView = require '../../core/customhtmlview'
-_throttle        = require 'lodash.throttle'
+_                = require 'lodash'
 
 module.exports = class KDDiaScene extends KDView
 
@@ -29,17 +29,17 @@ module.exports = class KDDiaScene extends KDView
     @fakeConnections = []
 
   diaAdded:(container, diaObj)->
-    diaObj.on "JointRequestsLine",   @bound "handleLineRequest"
+    diaObj.on "JointRequestsLine",   @bound @handleLineRequest
     diaObj.on "DragInAction",        => @highlightLines diaObj
     diaObj.on "RemoveMyConnections", => @disconnectAllConnections diaObj
 
   addContainer:(container, pos = {})->
     @addSubView container
 
-    container.on "NewDiaObjectAdded", @bound "diaAdded"
-    container.on "DragInAction",      @bound "updateScene"
-    container.on "UpdateScene",       @bound "updateScene"
-    container.on "HighlightDia",      @bound "highlightLines"
+    container.on "NewDiaObjectAdded", @bound @diaAdded
+    container.on "DragInAction",      @bound @updateScene
+    container.on "UpdateScene",       @bound @updateScene
+    container.on "HighlightDia",      @bound @highlightLines
 
     @containers.push container
 
@@ -133,7 +133,7 @@ module.exports = class KDDiaScene extends KDView
             joint = conn.dia.joints[conn.joint]
             if joint not in @activeJoints
               joint.showDeleteButton()
-              joint.on 'DeleteRequested', @bound 'disconnect'
+              joint.on 'DeleteRequested', @bound @disconnect
               @activeJoints.push joint
 
   handleLineRequest:(joint)->
@@ -194,11 +194,12 @@ module.exports = class KDDiaScene extends KDView
     @fakeConnections = []
     @updateScene()
 
-  updateScene:->
+  updateScene: _.throttle ->
 
     @cleanup @realCanvas
     @drawConnectionLine connection for connection in @connections
     @drawConnectionLine connection for connection in @fakeConnections
+  , 300
 
   drawConnectionLine:({source, target, options})->
 
@@ -279,7 +280,7 @@ module.exports = class KDDiaScene extends KDView
 
   parentDidResize:->
     super
-    do _throttle => @updateScene()
+    @updateScene()
 
   getSceneSize:-> width: @getWidth(), height: @getHeight()
 

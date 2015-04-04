@@ -44,7 +44,7 @@ module.exports = class KDHitEnterInputView extends KDInputView
       tagName  : "a"
       cssClass : "hitenterview-toggle"
       partial  : if o.showButton then o.togglerPartials[0] else o.togglerPartials[1]
-      click    : @bound "toggleEnterKey"
+      click    : @bound @toggleEnterKey
 
     @inputLabel.addSubView @inputEnterToggler
 

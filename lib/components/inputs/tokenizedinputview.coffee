@@ -104,7 +104,7 @@ module.exports = class KDTokenizedInput extends KDContentEditableView
 
     if token.trim()
       {dataSource} = @activeRule
-      dataSource token, @bound 'showMenu'
+      dataSource token, @bound @showMenu
     else if token.length isnt 0
       @cancel()
 
@@ -122,7 +122,7 @@ module.exports = class KDTokenizedInput extends KDContentEditableView
     options.y ?= pos.top + parseInt window.getComputedStyle(@tokenInput).lineHeight, 10
 
     @menu = new KDContextMenu options, data
-    @menu.on 'ContextMenuItemReceivedClick', @bound 'menuItemClicked'
+    @menu.on 'ContextMenuItemReceivedClick', @bound @menuItemClicked
 
   hideMenu: ->
     @menu?.destroy()

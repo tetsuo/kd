@@ -25,7 +25,7 @@ module.exports = class KDCustomScrollView extends KDCustomHTMLView
       mouseWheelSpeed
       scroll:
         if options.offscreenIndicatorClassName?
-        then @bound 'updateOffscreenIndicators'
+        then @bound @updateOffscreenIndicators
     }
 
     @verticalTrack   = new KDScrollTrack delegate : @wrapper
@@ -40,8 +40,8 @@ module.exports = class KDCustomScrollView extends KDCustomHTMLView
       @verticalTrack.thumb.reset()
       @horizontalTrack.thumb.reset()
 
-    @on 'mouseenter', @bound 'showTracks'
-    @on 'mouseleave', @bound 'hideTracks'
+    @on 'mouseenter', @bound @showTracks
+    @on 'mouseleave', @bound @hideTracks
 
   _windowDidResize: ->
     @updateOffscreenIndicators()

@@ -14,7 +14,7 @@ module.exports = class KDDialogView extends KDView
     options.buttons   or=
       Cancel            :
         style           : 'clean-red'
-        callback        : @bound 'hide'
+        callback        : @bound @hide
 
     super options, data
 
@@ -33,7 +33,7 @@ module.exports = class KDDialogView extends KDView
 
       {container} = @getOptions()
       @overlay = new KDOverlayView
-        click     : @bound 'hide'
+        click     : @bound @hide
         container : container
 
       @setClass 'in'

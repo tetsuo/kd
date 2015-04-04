@@ -26,7 +26,7 @@ module.exports = class KDCustomScrollViewWrapper extends KDScrollView
 
     super options, data
 
-    @on 'MutationHappened', @bound "toggleGlobalKeydownEventOnSizeCheck"
+    @on 'MutationHappened', @bound @toggleGlobalKeydownEventOnSizeCheck
 
     return unless KD.utils.isTouchDevice()
 
@@ -136,7 +136,7 @@ module.exports = class KDCustomScrollViewWrapper extends KDScrollView
     eventName = "keydown.customscroll#{@getId()}"
 
     if needToBind
-      $(document).on eventName, @bound "keyDown"  unless @globalKeydownEventBound
+      $(document).on eventName, @bound @keyDown  unless @globalKeydownEventBound
     else
       $(document).off eventName  if @globalKeydownEventBound
 

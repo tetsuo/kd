@@ -120,7 +120,7 @@ module.exports = class KDInputView extends KDView
       @on "viewAppended", =>
         o = @getOptions()
         if 'function' is typeof o.selectOptions
-          kallback = @bound "setSelectOptions"
+          kallback = @bound @setSelectOptions
           o.selectOptions.call @, kallback
         else unless o.selectOptions.length
           @setValue o.selectOptions[Object.keys(o.selectOptions)[0]][0].value unless o.defaultValue
@@ -144,9 +144,9 @@ module.exports = class KDInputView extends KDView
       else                 $ "<input #{name} type='#{@getType()}' class='kdinput #{@getType()} #{cssClass}'/>"
 
   bindValidationEvents:->
-    @on "ValidationError", @bound "giveValidationFeedback"
-    @on "ValidationPassed", @bound "giveValidationFeedback"
-    @on "focus", @bound "clearValidationFeedback"
+    @on "ValidationError", @bound @giveValidationFeedback
+    @on "ValidationPassed", @bound @giveValidationFeedback
+    @on "focus", @bound @clearValidationFeedback
 
   setLabel:(label = @getOptions().label)->
 

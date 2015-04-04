@@ -53,9 +53,9 @@ module.exports = class KDWindowController extends KDController
   bindEvents:->
 
     for eventName in @keyEventsToBeListened
-      window.addEventListener eventName, @bound 'key'
+      window.addEventListener eventName, @bound @key
 
-    window.addEventListener 'resize', @bound 'notifyWindowResizeListeners'
+    window.addEventListener 'resize', @bound @notifyWindowResizeListeners
 
     document.addEventListener 'scroll', do =>
       timer  = null
@@ -116,10 +116,12 @@ module.exports = class KDWindowController extends KDController
             KD.getSingleton("router").handleRoute href
     , no)
 
-    addListener 'beforeunload', @bound 'beforeUnload'
+    addListener 'beforeunload', @bound @beforeUnload
 
-    window.onfocus = @bound 'focusChange'
-    window.onblur  = @bound 'focusChange'
+    focusChange = @bound @focusChange
+
+    window.onfocus = focusChange
+    window.onblur  = focusChange
 
 
   addUnloadListener:(key, listener)->

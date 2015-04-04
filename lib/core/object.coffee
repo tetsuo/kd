@@ -1,7 +1,10 @@
 KD             = require './kd'
 KDEventEmitter = require './eventemitter'
+_              = require 'lodash'
 
-module.exports = class KDObject extends KDEventEmitter
+module.exports =
+
+class KDObject extends KDEventEmitter
 
   [NOTREADY, READY] = [0,1]
 
@@ -15,6 +18,8 @@ module.exports = class KDObject extends KDEventEmitter
     @setDelegate options.delegate if options.delegate
     @registerKDObjectInstance()
 
+    @bound.Cache = WeakMap
+
     super
 
     if options.testPath
@@ -27,28 +32,22 @@ module.exports = class KDObject extends KDEventEmitter
   define: (property, options) ->
 
     options = { get: options }  if 'function' is typeof options
-
     Object.defineProperty this, property, options
 
 
-  bound: (method)->
-    unless 'function' is typeof @[method]
-      throw new Error "bound: unknown method! #{method}"
-    boundMethod = "__bound__#{method}"
-    boundMethod of this or Object.defineProperty(
-      this, boundMethod, value: @[method].bind this
-    )
-    return @[boundMethod]
+  bound: _.memoize (fn, rest...) -> _.bind fn, this, rest...
 
-  lazyBound: (method, rest...)-> @[method].bind this, rest...
 
   forwardEvent: (target, eventName, prefix="") ->
-    target.on eventName, @lazyBound 'emit', prefix + eventName
+    target.on eventName, @bound @emit, prefix + eventName
+
 
   forwardEvents: (target, eventNames, prefix="") ->
     @forwardEvent target, eventName, prefix  for eventName in eventNames
 
-  ready:(listener)->
+
+  ready: (listener) ->
+
     if Promise?::nodeify
       new Promise (resolve) =>
         resolve() if @readyState is READY
@@ -57,47 +56,46 @@ module.exports = class KDObject extends KDEventEmitter
     else if @readyState is READY then @utils.defer listener
     else @once 'ready', listener
 
-  registerSingleton:KD.registerSingleton
 
-  getSingleton:KD.getSingleton
+  registerSingleton: KD.registerSingleton
 
-  getInstance:(instanceId)->
+  registerKDObjectInstance: -> KD.registerInstance this
+
+
+  getInstance: (instanceId) ->
     KD.getAllKDInstances()[instanceId] ? null
 
-  registerKDObjectInstance: -> KD.registerInstance @
+  getSingleton : KD.getSingleton
+  getData      : -> @data
+  getOptions   : -> @options
+  getOption    : (key) -> @options[key] ? null
+  getId        : -> @id
+  getDelegate  : -> @delegate
 
-  setData:(@data)->
 
-  getData:-> @data
+  setData     : (@data) ->
+  setOptions  : (@options = {}) ->
+  setDelegate : (@delegate) ->
 
-  setOptions:(@options = {})->
+  setOption   : (option, value) -> @options[option] = value
 
-  setOption:(option, value)-> @options[option] = value
+  unsetOption: (option) -> delete @options[option] if @options[option]
 
-  unsetOption:(option)-> delete @options[option] if @options[option]
 
-  getOptions:-> @options
-  getOption:(key)-> @options[key] ? null
+  changeId: (id) ->
 
-  changeId:(id)->
     KD.deleteInstance id
     @id = id
     KD.registerInstance @
 
-  getId:->@id
 
-  setDelegate:(@delegate)->
+  destroy: ->
 
-  getDelegate:->@delegate
-
-  destroy:->
     @isDestroyed = yes
     @emit 'KDObjectWillBeDestroyed'
     KD.deleteInstance @id
     # good idea but needs some refactoring
     # @[prop] = null  for own prop of this
 
-  chainNames:(options)->
-    options.chain
-    options.newLink
-    "#{options.chain}.#{options.newLink}"
+
+  chainNames: (options) -> "#{options.chain}.#{options.newLink}"

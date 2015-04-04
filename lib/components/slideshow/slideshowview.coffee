@@ -29,13 +29,13 @@ module.exports = class KDSlideShowView extends KDView
     if direction is 'topToBottom'
       @xcoordAnimations = topToBottom
       @ycoordAnimations = leftToRight
-      touchCallbacks    = ['nextSubPage', 'previousSubPage',
-                           'nextPage'   , 'previousPage']
+      touchCallbacks    = [@nextSubPage, @previousSubPage,
+                           @nextPage   , @previousPage]
     else
       @xcoordAnimations = leftToRight
       @ycoordAnimations = topToBottom
-      touchCallbacks    = ['nextPage'   , 'previousPage',
-                           'nextSubPage', 'previousSubPage']
+      touchCallbacks    = [@nextPage   , @previousPage,
+                           @nextSubPage, @previousSubPage]
 
     if touchEnabled
       hammer = Hammer @getElement()

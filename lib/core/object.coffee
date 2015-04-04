@@ -34,8 +34,6 @@ module.exports = class KDObject extends KDEventEmitter
 
   bound: (fn, rest...) -> _.bind fn, this, rest...
 
-  lazyBound: (method, rest...)-> @[method].bind this, rest...
-
   forwardEvent: (target, eventName, prefix="") ->
     target.on eventName, @lazyBound 'emit', prefix + eventName
 

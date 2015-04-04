@@ -59,14 +59,14 @@ module.exports = class KDRouter extends KDObject
     return no  if @isListening # make this action idempotent
     @isListening = yes
     # we need to add a listener to the window's popstate event:
-    window.addEventListener 'popstate', @bound "popState"
+    window.addEventListener 'popstate', @bound @popState
     return yes
 
   stopListening:->
     return no  unless @isListening # make this action idempotent
     @isListening = no
     # we need to remove the listener from the window's popstate event:
-    window.removeEventListener 'popstate', @bound "popState"
+    window.removeEventListener 'popstate', @bound @popState
     return yes
 
   @handleNotFound =(route)->

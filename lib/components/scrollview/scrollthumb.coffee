@@ -17,9 +17,9 @@ module.exports = class KDScrollThumb extends KDView
 
     @view = @track.getDelegate()
 
-    @on 'viewAppended', @bound 'calculateSize'
-    @on 'DragInAction', @bound 'handleDrag'
-    @view.on 'scroll',  @bound 'calculatePosition'
+    @on 'viewAppended', @bound @calculateSize
+    @on 'DragInAction', @bound @handleDrag
+    @view.on 'scroll',  @bound @calculatePosition
 
     @listenWindowResize()
 

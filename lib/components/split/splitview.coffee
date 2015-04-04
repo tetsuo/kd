@@ -44,7 +44,7 @@ module.exports = class KDSplitView extends KDView
     @_createResizer()  if @resizable and @panels[1]
 
     @listenWindowResize()
-    @parent?.on "PanelDidResize", KD.utils.debounce 10, @bound '_windowDidResize'
+    @parent?.on "PanelDidResize", KD.utils.debounce 10, @bound @_windowDidResize
 
 
   _createPanels:->

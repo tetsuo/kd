@@ -19,8 +19,8 @@ module.exports = class KDTabPaneView extends KDView
       self          : 0
 
 
-    @on 'KDTabPaneActive',        @bound 'setMainView'
-    @on 'KDTabPaneLazyViewAdded', @bound 'fireLazyCallback'
+    @on 'KDTabPaneActive',        @bound @setMainView
+    @on 'KDTabPaneLazyViewAdded', @bound @fireLazyCallback
 
 
   show:->

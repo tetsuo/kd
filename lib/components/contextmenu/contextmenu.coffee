@@ -45,10 +45,10 @@ module.exports = class KDContextMenu extends KDView
       @addSubView @treeController.getView()
       @treeController.getView().on 'ReceivedClickElsewhere', => @destroy() unless @sticky
 
-      @treeController.on "NodeExpanded", @bound "positionSubMenu"
+      @treeController.on "NodeExpanded", @bound @positionSubMenu
 
     if options.arrow
-      @on "viewAppended", @bound "addArrow"
+      @on "viewAppended", @bound @addArrow
 
     @appendToDomBody()
 

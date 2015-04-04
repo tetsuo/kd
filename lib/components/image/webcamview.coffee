@@ -33,7 +33,7 @@ module.exports = class KDWebcamView extends KDView
     else new KDButtonView
       title     : options.snapTitle
       cssClass  : "snap-button hidden"
-      callback  : @bound 'countDown'
+      callback  : @bound @countDown
 
     @retake = if options.hideControls then new KDView cssClass: "hidden"
     else new KDButtonView

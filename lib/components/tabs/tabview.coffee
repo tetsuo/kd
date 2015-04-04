@@ -50,7 +50,7 @@ module.exports = class KDTabView extends KDScrollView
     @on "PaneAdded", =>
       @blockTabHandleResize = no
       @resizeTabHandles()
-    @on "PaneDidShow", @bound "setActivePane"
+    @on "PaneDidShow", @bound @setActivePane
 
     if options.paneData.length > 0
       @on "viewAppended", => @createPanes options.paneData
@@ -108,7 +108,7 @@ module.exports = class KDTabView extends KDScrollView
       maxWidth : maxHandleWidth
       minWidth : minHandleWidth
 
-    newTabHandle.on 'HandleIndexHasChanged', @bound 'resortTabHandles'
+    newTabHandle.on 'HandleIndexHasChanged', @bound @resortTabHandles
 
     return paneInstance
 

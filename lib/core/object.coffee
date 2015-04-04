@@ -1,5 +1,6 @@
 KD             = require './kd'
 KDEventEmitter = require './eventemitter'
+_              = require 'lodash'
 
 module.exports = class KDObject extends KDEventEmitter
 
@@ -31,14 +32,7 @@ module.exports = class KDObject extends KDEventEmitter
     Object.defineProperty this, property, options
 
 
-  bound: (method)->
-    unless 'function' is typeof @[method]
-      throw new Error "bound: unknown method! #{method}"
-    boundMethod = "__bound__#{method}"
-    boundMethod of this or Object.defineProperty(
-      this, boundMethod, value: @[method].bind this
-    )
-    return @[boundMethod]
+  bound: (fn, rest...) -> _.bind fn, this, rest...
 
   lazyBound: (method, rest...)-> @[method].bind this, rest...
 

@@ -37,7 +37,7 @@ class KDObject extends KDEventEmitter
 
 
   forwardEvent: (target, eventName, prefix="") ->
-    target.on eventName, @lazyBound 'emit', prefix + eventName
+    target.on eventName, @bound @emit, prefix + eventName
 
 
   forwardEvents: (target, eventNames, prefix="") ->

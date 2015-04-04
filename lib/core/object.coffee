@@ -2,7 +2,9 @@ KD             = require './kd'
 KDEventEmitter = require './eventemitter'
 _              = require 'lodash'
 
-module.exports = class KDObject extends KDEventEmitter
+module.exports =
+
+class KDObject extends KDEventEmitter
 
   [NOTREADY, READY] = [0,1]
 
@@ -28,19 +30,22 @@ module.exports = class KDObject extends KDEventEmitter
   define: (property, options) ->
 
     options = { get: options }  if 'function' is typeof options
-
     Object.defineProperty this, property, options
 
 
   bound: (fn, rest...) -> _.bind fn, this, rest...
 
+
   forwardEvent: (target, eventName, prefix="") ->
     target.on eventName, @lazyBound 'emit', prefix + eventName
+
 
   forwardEvents: (target, eventNames, prefix="") ->
     @forwardEvent target, eventName, prefix  for eventName in eventNames
 
-  ready:(listener)->
+
+  ready: (listener) ->
+
     if Promise?::nodeify
       new Promise (resolve) =>
         resolve() if @readyState is READY
@@ -49,47 +54,45 @@ module.exports = class KDObject extends KDEventEmitter
     else if @readyState is READY then @utils.defer listener
     else @once 'ready', listener
 
-  registerSingleton:KD.registerSingleton
 
-  getSingleton:KD.getSingleton
+  registerSingleton: KD.registerSingleton
 
-  getInstance:(instanceId)->
+  registerKDObjectInstance: -> KD.registerInstance this
+
+
+  getInstance: (instanceId) ->
     KD.getAllKDInstances()[instanceId] ? null
 
-  registerKDObjectInstance: -> KD.registerInstance @
+  getSingleton : KD.getSingleton
+  getData      : -> @data
+  getOptions   : -> @options
+  getOption    : (key) -> @options[key] ? null
+  getId        : -> @id
+  getDelegate  : -> @delegate
 
-  setData:(@data)->
 
-  getData:-> @data
+  setData     : (@data)         -> throw 'not implemented'
+  setOptions  : (@options = {}) -> throw 'not implemented'
+  setDelegate : (@delegate)     -> throw 'not implemented'
+  setOption   : (option, value) -> @options[option] = value
 
-  setOptions:(@options = {})->
+  unsetOption: (option) -> delete @options[option] if @options[option]
 
-  setOption:(option, value)-> @options[option] = value
 
-  unsetOption:(option)-> delete @options[option] if @options[option]
+  changeId: (id) ->
 
-  getOptions:-> @options
-  getOption:(key)-> @options[key] ? null
-
-  changeId:(id)->
     KD.deleteInstance id
     @id = id
     KD.registerInstance @
 
-  getId:->@id
 
-  setDelegate:(@delegate)->
+  destroy: ->
 
-  getDelegate:->@delegate
-
-  destroy:->
     @isDestroyed = yes
     @emit 'KDObjectWillBeDestroyed'
     KD.deleteInstance @id
     # good idea but needs some refactoring
     # @[prop] = null  for own prop of this
 
-  chainNames:(options)->
-    options.chain
-    options.newLink
-    "#{options.chain}.#{options.newLink}"
+
+  chainNames: (options) -> "#{options.chain}.#{options.newLink}"

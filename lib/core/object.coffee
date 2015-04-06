@@ -71,9 +71,10 @@ class KDObject extends KDEventEmitter
   getDelegate  : -> @delegate
 
 
-  setData     : (@data)         -> throw 'not implemented'
-  setOptions  : (@options = {}) -> throw 'not implemented'
-  setDelegate : (@delegate)     -> throw 'not implemented'
+  setData     : (@data) ->
+  setOptions  : (@options = {}) ->
+  setDelegate : (@delegate) ->
+
   setOption   : (option, value) -> @options[option] = value
 
   unsetOption: (option) -> delete @options[option] if @options[option]

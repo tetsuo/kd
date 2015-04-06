@@ -18,6 +18,8 @@ class KDObject extends KDEventEmitter
     @setDelegate options.delegate if options.delegate
     @registerKDObjectInstance()
 
+    @bound.Cache = WeakMap
+
     super
 
     if options.testPath
@@ -33,7 +35,7 @@ class KDObject extends KDEventEmitter
     Object.defineProperty this, property, options
 
 
-  bound: (fn, rest...) -> _.bind fn, this, rest...
+  bound: _.memoize (fn, rest...) -> _.bind fn, this, rest...
 
 
   forwardEvent: (target, eventName, prefix="") ->

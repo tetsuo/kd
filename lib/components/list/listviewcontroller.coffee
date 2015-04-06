@@ -92,14 +92,14 @@ module.exports = class KDListViewController extends KDViewController
     if scrollView
       mainView.addSubView @customScrollView or @scrollView
       @scrollView.addSubView @getListView()
-      @scrollView.on 'LazyLoadThresholdReached', @bound @showLazyLoader
+      @scrollView.on 'LazyLoadThresholdReached', @bound "showLazyLoader"
 
     @showLazyLoader no  if startWithLazyLoader
     @putNoItemView()    if noItemFoundWidget
 
     @instantiateListItems @getData()?.items or []
 
-    windowController.on "ReceivedMouseUpElsewhere", @bound @mouseUpHappened
+    windowController.on "ReceivedMouseUpElsewhere", @bound 'mouseUpHappened'
 
 
   instantiateListItems: (items) ->

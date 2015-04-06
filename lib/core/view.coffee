@@ -91,7 +91,7 @@ module.exports = class KDView extends KDObject
 
     super options, data
 
-    data?.on? 'update', @bound @render
+    data?.on? 'update', @bound 'render'
 
     @defaultInit()
 
@@ -178,9 +178,9 @@ module.exports = class KDView extends KDObject
     @domElement.attr "id",id
 
   setData: (data) ->
-    @data?.off? 'update', @bound @render
+    @data?.off? 'update', @bound 'render'
     super data
-    @data?.on? 'update', @bound @render
+    @data?.on? 'update', @bound 'render'
     @render()  if @parentIsInDom
 
   setDataId:->

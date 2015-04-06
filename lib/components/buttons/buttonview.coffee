@@ -105,10 +105,10 @@ module.exports = class KDButtonView extends KDView
     @disable()                      if options.disabled
 
     if options.focus
-      @once "viewAppended", @bound @setFocus
+      @once "viewAppended", @bound "setFocus"
 
     if options.loader
-      @once "viewAppended", @bound @setLoader
+      @once "viewAppended", @bound "setLoader"
 
   setFocus:-> @$().trigger 'focus'
 

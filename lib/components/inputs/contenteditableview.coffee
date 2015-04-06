@@ -86,7 +86,7 @@ module.exports = class KDContentEditableView extends KDView
     windowController.addLayer this
     @setKeyView()
 
-    @once "ReceivedClickElsewhere", @bound @blur unless @focused
+    @once "ReceivedClickElsewhere", @bound 'blur' unless @focused
     @focused = yes
     @getOptions().focus?()
 

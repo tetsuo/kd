@@ -74,7 +74,7 @@ module.exports = class KDFileUploadView extends KDView
       @emit 'FileReadComplete', {file, progressEvent:event}
       @fileReadComplete file, event
     uploader.once 'FileUploadSuccess', (res)=> @fileUploadComplete file, res
-    uploader.once 'FileUploadError', @bound @handleUploadError
+    uploader.once 'FileUploadError', @bound 'handleUploadError'
 
   handleUploadError:(xhr)->
     # TODO: handle this error, if any

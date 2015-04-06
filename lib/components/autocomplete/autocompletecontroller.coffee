@@ -41,7 +41,7 @@ module.exports = class KDAutoCompleteController extends KDViewController
 
     super options, data
 
-    mainView.on 'focus', @bound @updateDropdownContents
+    mainView.on 'focus', @bound 'updateDropdownContents'
 
     @lastPrefix          = null
     @selectedItemData    = []
@@ -60,7 +60,7 @@ module.exports = class KDAutoCompleteController extends KDViewController
   loadView:(mainView)->
     @setDefaultValue()
 
-    mainView.on 'keyup', @bound @keyUpOnInputView
+    mainView.on 'keyup', @bound 'keyUpOnInputView'
     mainView.on 'keydown', (event)=> @keyDownOnInputView event
 
   setDefaultValue:(defaultItems)->
@@ -116,7 +116,7 @@ module.exports = class KDAutoCompleteController extends KDViewController
       view = @getView()
       view.$input().trigger('focus')
 
-    dropdownListView.on 'KDAutoCompleteSubmit', @bound @submitAutoComplete
+    dropdownListView.on 'KDAutoCompleteSubmit', @bound 'submitAutoComplete'
 
     windowController = KD.getSingleton('windowController')
 

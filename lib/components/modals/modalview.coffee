@@ -185,7 +185,7 @@ module.exports = class KDModalView extends KDView
 
     @overlay = new KDOverlayView overlayOptions
 
-    @overlay.once 'click', @bound @destroy  if overlayClick
+    @overlay.once 'click', @bound 'destroy'  if overlayClick
 
 
   createButton: (title, buttonOptions) ->

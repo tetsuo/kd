@@ -16,7 +16,7 @@ module.exports = class KDNotificationView extends KDView
     @notificationShowTimer()                          if options.showTimer?
     @notificationSetCloseHandle options.closeManually
 
-    @once "viewAppended",       @bound @setLoader    if options.loader
+    @once "viewAppended",       @bound "setLoader"    if options.loader
 
     @notificationDisplay()
 

@@ -36,7 +36,7 @@ module.exports = class KDTooltip extends KDView
     @addListeners()
     
     windowController = KD.getSingleton 'windowController'
-    windowController.on 'ScrollHappened', @bound @hide
+    windowController.on 'ScrollHappened', @bound "hide"
 
     @once 'viewAppended', =>
 
@@ -89,8 +89,8 @@ module.exports = class KDTooltip extends KDView
   addListeners:->
     {events, sticky, permanent} = @getOptions()
 
-    _show = @bound @show
-    _hide = @bound @hide
+    _show = @bound 'show'
+    _hide = @bound 'hide'
 
     @parentView.bindEvent name for name in events
     @parentView.on 'mouseenter', _show

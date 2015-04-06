@@ -250,7 +250,7 @@ module.exports = class JTreeViewController extends KDViewController
   removeAllNodes:->
 
     for own id, listController of @listControllers
-      listController.getListItems().forEach @bound @removeNodeView
+      listController.getListItems().forEach @bound 'removeNodeView'
       listController?.getView().destroy()
       delete @listControllers[id]
       delete @listData[id]

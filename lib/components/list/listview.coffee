@@ -21,7 +21,7 @@ module.exports = class KDListView extends KDView
 
     # if @getOptions().boxed
     #   @on 'viewAppended', =>
-    #     @parent.on 'scroll', @bound @handleScroll
+    #     @parent.on 'scroll', @bound 'handleScroll'
 
 
   empty: ->

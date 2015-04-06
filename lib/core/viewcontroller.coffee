@@ -24,4 +24,4 @@ module.exports = class KDViewController extends KDController
     else
       aViewInstance.once 'viewAppended', cb
       aViewInstance.once 'KDObjectWillBeDestroyed', =>
-        KD.utils.defer @bound @destroy
+        KD.utils.defer @bound "destroy"

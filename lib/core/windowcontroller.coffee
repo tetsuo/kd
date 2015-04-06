@@ -118,8 +118,10 @@ module.exports = class KDWindowController extends KDController
 
     addListener 'beforeunload', @bound @beforeUnload
 
-    window.onfocus = @bound @focusChange
-    window.onblur  = @bound @focusChange
+    focusChange = @bound @focusChange
+
+    window.onfocus = focusChange
+    window.onblur  = focusChange
 
 
   addUnloadListener:(key, listener)->
